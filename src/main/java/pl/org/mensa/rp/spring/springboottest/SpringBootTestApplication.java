@@ -16,7 +16,7 @@ public class SpringBootTestApplication {
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
-			
+			// init suff
 		};
 		
 	}
