@@ -22,7 +22,8 @@ public class MainControllerTest {
 	@Test
 	public void testIndex() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk())
-				.andExpect(content().string(equalTo("pog")));
+			.andExpect(status().isOk())
+			.andExpect(content().string(equalTo("pog"))
+		);
 	}
 }
