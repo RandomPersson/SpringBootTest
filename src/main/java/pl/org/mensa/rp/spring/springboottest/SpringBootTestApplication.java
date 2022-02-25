@@ -25,7 +25,7 @@ public class SpringBootTestApplication extends SpringBootServletInitializer {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			// init suff
-			Utils.log("&aServer initialized", logger);
+			Utils.log("&aServer initialized&r", logger);
 		};
 	}
 	

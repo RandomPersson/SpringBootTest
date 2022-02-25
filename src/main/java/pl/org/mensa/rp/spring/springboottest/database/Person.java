@@ -12,19 +12,19 @@ public class Person {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
-	private String first_name;
-	private String last_name;
+	private String firstName;
+	private String lastName;
 	
 	protected Person() {}
 	
 	public Person(String first_name, String last_name) {
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = first_name;
+		this.lastName = last_name;
 	}
 	
 	@Override
 	public String toString() {
-		return Utils.buildString("ExampleTable[id=", id, ", first_name='", first_name, "', last_name='", last_name, "']");
+		return Utils.buildString("ExampleTable[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
 	}
 	
 	public long getId() {
@@ -32,11 +32,11 @@ public class Person {
 	}
 	
 	public String getFirstName() {
-		return first_name;
+		return firstName;
 	}
 	
 	public String getLastName() {
-		return last_name;
+		return lastName;
 	}
 	
 }
