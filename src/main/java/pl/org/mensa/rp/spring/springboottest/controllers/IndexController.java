@@ -9,7 +9,7 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @RestController
 public class IndexController {
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
 	@GetMapping("/")
 	public String index() {
@@ -17,10 +17,16 @@ public class IndexController {
 		return "pog";
 	}
 	
+	@GetMapping("/database/")
+	public String database() {
+		
+		return "database page";
+	}
+	
 	@GetMapping("/colortest/")
-	public String index2() {
+	public String colortest() {
 		Utils.log("Color test:", logger);
 		Utils.log("&11&22&33&44&55&66&77&88&99&00&aa&bb&cc&dd&ee&ff&rr", logger);
-		return "Color test sent to console";
+		return "colortest page";
 	}
 }

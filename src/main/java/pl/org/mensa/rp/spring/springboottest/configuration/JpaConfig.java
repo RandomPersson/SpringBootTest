@@ -9,14 +9,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class JpaConfig {
 	
-	@Bean(name = "MySQL_data_source")
+	@Bean
 	public DataSource getDataSource() {
 		DataSourceBuilder<?> data_source_builder = DataSourceBuilder.create();
 		
 		data_source_builder.driverClassName("com.mysql.jdbc.Driver");
 		data_source_builder.url("jdbc:mysql://localhost:3306/test");
-		data_source_builder.username("spring_test_app");
-		data_source_builder.password("12346");
+		data_source_builder.username("root");
+		data_source_builder.password("123456");
 		
 		return data_source_builder.build();
 	}

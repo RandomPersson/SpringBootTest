@@ -35,6 +35,8 @@ public class Utils {
 		color_map.put("&r", "0");
 	}
 	
+	// ye, I noticed this doesn't work on Tomcat
+	// but looks cool when testing so it stays :D
 	public static String ANSIfyColors(String text) {
 		String pattern_string = "(" + StringUtils.join(color_map.keySet(), "|") + ")";
 		Pattern pattern = Pattern.compile(pattern_string);
@@ -51,5 +53,15 @@ public class Utils {
 	
 	public static void log(String message, Logger logger) {
 		logger.info(ANSIfyColors(message));
+	}
+	
+	public static String buildString(Object... objects) {
+		StringBuilder string_builder = new StringBuilder(objects.length);
+		
+		for (Object object : objects) {
+			string_builder.append(object);
+		}
+		
+		return string_builder.toString();
 	}
 }
