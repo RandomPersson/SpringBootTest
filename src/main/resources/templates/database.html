@@ -25,7 +25,7 @@
 		<form name="database_CRUD_form" action="/database/request" target="form_result_frame" method="post">
 			<input type="hidden" name="database_action" value="invalid" />
 			
-			<table>
+			<table style="margin-left: auto; margin-right: auto;">
 				<tr>
 					<th>ID</th>
 					<th>First name</th>
@@ -36,13 +36,13 @@
 					<td><input type="text" id="first_name" name="first_name" /></td>
 					<td><input type="text" id="last_name" name="last_name" /></td>
 					
-					<td><input type="submit" value="Add entry" onclick="onSubmitForm('add')" /></td>
+					<td><input type="submit" value="Add entry" onclick="onSubmitForm('add')" style="width: 100%" /></td>
 					<td><input type="submit" value="Remove entry" onclick="onSubmitForm('remove')" /></td>
 				</tr>
 				<tr>
-					<td><input type="text" id="id" name="id" /></td>
-					<td><input type="text" id="change_to_first_name" name="first_name" /></td>
-					<td><input type="text" id="change_to_last_name" name="last_name" /></td>
+					<td></td>
+					<td><input type="text" id="change_to_first_name" name="change_to_first_name" /></td>
+					<td><input type="text" id="change_to_last_name" name="change_to_last_name" /></td>
 					
 					<td><input type="submit" value="Modify entry" onclick="onSubmitForm('modify')" /></td>
 				</tr>

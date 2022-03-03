@@ -21,7 +21,6 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 @Controller
 public class DatabaseController {
 	
-	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseController.class);
 	
 	@Autowired
@@ -36,44 +35,42 @@ public class DatabaseController {
 	@ResponseBody
 	public DatabaseActionJSON postDatabase(
 			@RequestParam(value = "database_action", required = true) String databaseAction,
-			@RequestParam(value = "id", required = false, defaultValue = "-1") long id,
+			@RequestParam(value = "id", required = false, defaultValue = "0") long id,
 			@RequestParam(value = "first_name", required = false, defaultValue = "") String firstName,
 			@RequestParam(value = "last_name", required = false, defaultValue = "") String lastName,
 			@RequestParam(value = "change_to_first_name", required = false, defaultValue = "") String changeToFirstName,
 			@RequestParam(value = "change_to_last_name", required = false, defaultValue = "") String changeToLastName
 		) {
 		
-		// validation (security)
-		// but i'm too lazy
+		// here should be validation (security++) but i'm too lazy
 		
-		Utils.log("1", logger);
+		// TODO [DEBUG] remove later
+		Utils.log("database_action=" + databaseAction, logger);
+		Utils.log("id=" + id, logger);
+		Utils.log("first_name=" + firstName, logger);
+		Utils.log("last_name=" + lastName, logger);
+		Utils.log("change_to_first_name=" + changeToFirstName, logger);
+		Utils.log("change_to_last_name=" + changeToLastName, logger);
 		
 		ERRTYPE errorCode = ERRTYPE.NO_ERROR;
 		String message;
 		
 		// very ugly but it's late and I'm lazy
-		Utils.log("2", logger);
 		switch (databaseAction) {
 			case "add": {
-				Utils.log("2.1.1", logger);
 				personRepository.save(new Person(firstName, lastName));
-				Utils.log("2.1.2", logger);
 				
 				message = "Create successful";
 			} break;
 			
 			case "remove": {
-				Utils.log("2.2.1", logger);
 				personRepository.deleteById(id);
-				Utils.log("2.2.2", logger);
 				
 				message = "Deletion successful";
 			} break;
 			
 			case "modify": {
-				Utils.log("2.3.1", logger);
 				Person person = personRepository.findById(id);
-				Utils.log("2.3.2", logger);
 				
 				if (person == null) {
 					errorCode = ERRTYPE.DATABASE_ID_NOT_FOUND;
@@ -85,18 +82,16 @@ public class DatabaseController {
 					
 					message = "Modification successful";
 				}
-				Utils.log("2.3.3", logger);
 			} break;
 			
 			case "list": {
-				Utils.log("2.4", logger);
 				List<Person> result = new ArrayList<Person>();
 				
-				if (firstName != null) {
+				if (firstName != "") {
 					personRepository.findByFirstName(firstName).forEach(person -> result.add(person));
 				}
 				else {
-					if (lastName != null) {
+					if (lastName != "") {
 						personRepository.findByLastName(lastName).forEach(person -> result.add(person));
 					}
 					else {
@@ -104,22 +99,17 @@ public class DatabaseController {
 					}
 				}
 				
-				message = " ";
+				message = "";
 				for (Person person : result) {
 					message += person.toJSON() + ",";
 				}
-				message = "{" + message.substring(0, message.length()-1) + "}";
+				message = "{" + message.substring(0, message.length() == 0 ? 0 : message.length()-1) + "}";
 			} break;
 			
 			default: {
 				errorCode = ERRTYPE.DATABASE_INCORRECT_DATABASE_ACTION;
 				message = "Incorrect databaseAction";
 			}
-		}
-		
-		//TODO remove later - debug
-		for (Person person : personRepository.findAll()) {
-			Utils.log(person.toString(), logger);
 		}
 		
 		return new DatabaseActionJSON(errorCode, message);

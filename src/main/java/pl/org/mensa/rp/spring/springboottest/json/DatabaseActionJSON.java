@@ -4,7 +4,7 @@ import pl.org.mensa.rp.spring.springboottest.util.ERRTYPE;
 
 public class DatabaseActionJSON {
 	
-	private final int packetId = 2;
+	private final int id = 0;
 	private final long errorCode;
 	private final String message;
 	
@@ -13,8 +13,8 @@ public class DatabaseActionJSON {
 		this.message = message;
 	}
 	
-	public int getPacketId() {
-		return packetId;
+	public int getId() {
+		return id;
 	}
 	
 	public long getErrorCode() {
