@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Spring Boot E2E CRUD test</title>		
+	</head>
+	
+	<body style="text-align: center;">
+		
+		<img src="https://i.imgur.com/RIRsdzl.png" alt="" />
+		<br>
+		
+		<form action="/database/" target="form_result_frame" method="post">
+			<input type="hidden" name="database_action" value="add">
+			<input type="text" id="first_name" name="first_name" value="">
+			<input type="text" id="last_name" name="last_name" value="">
+			<input type="submit" value="Add person">
+		</form> 
+		
+		<iframe height=500 width=500 name="form_result_frame" />
+		
+	</body>
+</html>

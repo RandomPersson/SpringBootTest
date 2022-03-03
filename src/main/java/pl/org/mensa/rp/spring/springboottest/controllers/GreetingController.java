@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import pl.org.mensa.rp.spring.springboottest.json.Greeting;
+import pl.org.mensa.rp.spring.springboottest.json.GreetingJSON;
 
 @RestController
 public class GreetingController {
@@ -15,7 +15,7 @@ public class GreetingController {
 	private final AtomicLong counter = new AtomicLong();
 	
 	@GetMapping("/greeting/")
-	public Greeting greeting(@RequestParam(value = "name", defaultValue = "you") String name) {
-		return new Greeting(counter.incrementAndGet(), String.format(template, name));
+	public GreetingJSON greeting(@RequestParam(value = "name", defaultValue = "you") String name) {
+		return new GreetingJSON(counter.incrementAndGet(), String.format(template, name));
 	}
 }

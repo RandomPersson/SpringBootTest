@@ -52,7 +52,7 @@ public class Person {
 	
 	@Override
 	public String toString() {
-		return Utils.buildString("ExampleTable[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
+		return Utils.buildString("Person[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
 	}
 	
 	@Override
