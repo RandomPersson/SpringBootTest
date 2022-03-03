@@ -55,6 +55,8 @@ public class Utils {
 		logger.info(ANSIfyColors(message));
 	}
 	
+	// way faster than String.format, but doesn't look as convenient...
+	// a hard choice.
 	public static String buildString(Object... objects) {
 		StringBuilder string_builder = new StringBuilder(objects.length);
 		
