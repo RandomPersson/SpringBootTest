@@ -14,7 +14,7 @@ public class GreetingController {
 	private static final String template = "Hullo, %s!";
 	private final AtomicLong counter = new AtomicLong();
 	
-	@GetMapping("/greeting/")
+	@GetMapping("/greeting")
 	public GreetingJSON greeting(@RequestParam(value = "name", defaultValue = "you") String name) {
 		return new GreetingJSON(counter.incrementAndGet(), String.format(template, name));
 	}

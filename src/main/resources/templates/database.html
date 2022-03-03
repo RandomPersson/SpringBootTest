@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Spring Boot E2E CRUD test</title>
+		
+		<script>
+			function fitSizeToContent(obj) {
+				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
+			}
+			function onSubmitForm(database_action) {
+				document.database_CRUD_form.database_action.value = database_action;
+			}
+		</script>
+		
+	</head>
+	
+	<body style="text-align: center;">
+		
+		<a href="/">
+			<img src="https://i.imgur.com/RIRsdzl.png" title="Click to go to back to index" />
+		</a>
+		<br>
+		
+		<form name="database_CRUD_form" action="/database/request" target="form_result_frame" method="post">
+			<input type="hidden" name="database_action" value="invalid" />
+			
+			<table>
+				<tr>
+					<th>ID</th>
+					<th>First name</th>
+					<th>Last name</th>
+				</tr>
+				<tr>
+					<td><input type="text" id="id" name="id" /></td>
+					<td><input type="text" id="first_name" name="first_name" /></td>
+					<td><input type="text" id="last_name" name="last_name" /></td>
+					
+					<td><input type="submit" value="Add entry" onclick="onSubmitForm('add')" /></td>
+					<td><input type="submit" value="Remove entry" onclick="onSubmitForm('remove')" /></td>
+				</tr>
+				<tr>
+					<td><input type="text" id="id" name="id" /></td>
+					<td><input type="text" id="change_to_first_name" name="first_name" /></td>
+					<td><input type="text" id="change_to_last_name" name="last_name" /></td>
+					
+					<td><input type="submit" value="Modify entry" onclick="onSubmitForm('modify')" /></td>
+				</tr>
+				<tr>
+					<td colspan=3><input type="submit" value="Show matching entries" onclick="onSubmitForm('list')" /></td>
+				</tr>
+			</table>
+			
+		</form>
+		<br>
+		
+		<iframe name="form_result_frame" style="width: 80%; height: 500px" />
+		
+	</body>
+</html>

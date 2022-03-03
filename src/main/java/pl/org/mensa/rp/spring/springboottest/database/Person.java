@@ -7,10 +7,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import pl.org.mensa.rp.spring.springboottest.util.JSONable;
 import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @Entity
-public class Person {
+public class Person implements JSONable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
@@ -44,11 +45,26 @@ public class Person {
 	// SETTERS //
 	/////////////
 	
-	// none
+//	public void setId(long id) {
+//		this.id = id;
+//	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	
 	///////////////
 	// OVERRIDES //
 	///////////////
+	
+	@Override
+	public String toJSON() {
+		return String.format("{id:%d,first_name:%s,last_name:%s}", id, firstName, lastName);
+	}
 	
 	@Override
 	public String toString() {

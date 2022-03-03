@@ -8,43 +8,53 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DatabaseLoader implements CommandLineRunner {
+	@SuppressWarnings("unused")
 	private static final Logger logger = LoggerFactory.getLogger(DatabaseLoader.class);
 	
-	private final PersonRepository person_repository;
+	private final PersonRepository personRepository;
 	
 	@Autowired
-	public DatabaseLoader(PersonRepository person_repository) {
-		this.person_repository = person_repository;
+	public DatabaseLoader(PersonRepository personRepository) {
+		this.personRepository = personRepository;
 	}
 	
 	@Override
 	public void run(String... strings) throws Exception {
-		person_repository.save(new Person("Human", "Persson"));
-		person_repository.save(new Person("Random", "Persson"));
-		person_repository.save(new Person("Human", "Being"));
+		personRepository.save(new Person("Human", "Persson"));
+		personRepository.save(new Person("Random", "Persson"));
+		personRepository.save(new Person("Human", "Being"));
+		personRepository.save(new Person("Random", "Dude"));
+		personRepository.save(new Person("Random", "Being"));
 		
-		// fetch all customers
-		logger.info("Customers found with findAll():");
-		logger.info("-------------------------------");
-		for (Person person : person_repository.findAll()) {
-			logger.info(person.toString());
-		}
-		logger.info("");
-		
-		// fetch an individual customer by ID
-		Person person = person_repository.findById(1L);
-		logger.info("Customer found with findById(1L):");
-		logger.info("--------------------------------");
-		logger.info(person.toString());
-		logger.info("");
-		
-		// fetch customers by last name
-		logger.info("Customer found with findByLastName('Persson'):");
-		logger.info("--------------------------------------------");
-		person_repository.findByLastName("Persson").forEach(persson -> {
-			logger.info(persson.toString());
-		});
-		
-		logger.info("");
+//		// fetch all customers
+//		logger.info("Customers found with findAll():");
+//		logger.info("-------------------------------");
+//		for (Person person : personRepository.findAll()) {
+//			logger.info(person.toString());
+//		}
+//		logger.info("");
+//		
+//		// fetch an individual customer by ID
+//		Person person = personRepository.findById(1L);
+//		logger.info("Customer found with findById(1L):");
+//		logger.info("--------------------------------");
+//		logger.info(person.toString());
+//		logger.info("");
+//		
+//		// fetch customers by last name
+//		logger.info("Customer found with findByLastName('Persson'):");
+//		logger.info("--------------------------------------------");
+//		personRepository.findByLastName("Persson").forEach(persson -> {
+//			logger.info(persson.toString());
+//		});
+//		
+//		// fetch customers by first or last name
+//		logger.info("Customer found with findByFirstOrLastName('Human', 'Persson'):");
+//		logger.info("--------------------------------------------");
+//		personRepository.findByFirstOrLastName("Human", "Persson").forEach(persson -> {
+//			logger.info(persson.toString());
+//		});
+//		
+//		logger.info("");
 	}
 }

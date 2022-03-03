@@ -1,32 +1,28 @@
 package pl.org.mensa.rp.spring.springboottest.json;
 
+import pl.org.mensa.rp.spring.springboottest.util.ERRTYPE;
+
 public class DatabaseActionJSON {
 	
-	private final boolean success;
-	private final String databaseAction;
-	private final String firstName;
-	private final String lastName;
+	private final int packetId = 2;
+	private final long errorCode;
+	private final String message;
 	
-	public DatabaseActionJSON(boolean success, String databaseAction, String firstName, String lastName) {
-		this.success = success;
-		this.databaseAction = databaseAction;
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public DatabaseActionJSON(ERRTYPE errorCode, String message) {
+		this.errorCode = errorCode.getId();
+		this.message = message;
 	}
 	
-	public boolean getSuccess() {
-		return success;
+	public int getPacketId() {
+		return packetId;
 	}
 	
-	public String getDatabaseAction() {
-		return databaseAction;
+	public long getErrorCode() {
+		return errorCode;
 	}
 	
-	public String getFirstName() {
-		return firstName;
+	public String getMessage() {
+		return message;
 	}
 	
-	public String getLastName() {
-		return lastName;
-	}
 }
