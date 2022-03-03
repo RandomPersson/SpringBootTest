@@ -3,6 +3,7 @@ package pl.org.mensa.rp.spring.springboottest.controllers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import pl.org.mensa.rp.spring.springboottest.util.Utils;
@@ -11,16 +12,14 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 public class IndexController {
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
-	@GetMapping("/")
-	public String index() {
-		Utils.log("Test", logger);
-		return "pog";
+	@RequestMapping("/")
+	public String requestIndex() {
+		return "index";
 	}
 	
-	@GetMapping("/database/")
-	public String database() {
-		
-		return "database page";
+	@GetMapping("/")
+	public String getIndex() {
+		return "pog";
 	}
 	
 	@GetMapping("/colortest/")

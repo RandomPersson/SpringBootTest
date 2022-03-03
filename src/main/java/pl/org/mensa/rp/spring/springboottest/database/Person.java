@@ -1,5 +1,7 @@
 package pl.org.mensa.rp.spring.springboottest.database;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,10 +24,9 @@ public class Person {
 		this.lastName = last_name;
 	}
 	
-	@Override
-	public String toString() {
-		return Utils.buildString("ExampleTable[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
-	}
+	/////////////
+	// GETTERS //
+	/////////////
 	
 	public long getId() {
 		return id;
@@ -39,4 +40,32 @@ public class Person {
 		return lastName;
 	}
 	
+	/////////////
+	// SETTERS //
+	/////////////
+	
+	// none
+	
+	///////////////
+	// OVERRIDES //
+	///////////////
+	
+	@Override
+	public String toString() {
+		return Utils.buildString("ExampleTable[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null || getClass() != obj.getClass()) return false;
+		
+		Person employee = (Person) obj;
+		
+		return
+			Objects.equals(id, employee.id) &&
+			Objects.equals(firstName, employee.firstName) &&
+			Objects.equals(lastName, employee.lastName)
+		;
+	}
 }
