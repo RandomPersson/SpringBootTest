@@ -1,6 +1,5 @@
 package pl.org.mensa.rp.spring.springboottest.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,8 @@ public class DatabaseController {
 	
 	@GetMapping("/database")
 	public String getDatabase() {
+		Utils.debug("Received /database GET request:", this.getClass());
+		
 		return "database";
 	}
 	
@@ -40,79 +41,48 @@ public class DatabaseController {
 		
 		// here should be validation (security++) but i'm too lazy
 		
-		// TODO [DEBUG] remove later
-		Utils.log("database_action=" + databaseAction, this.getClass());
-		Utils.log("id=" + id, this.getClass());
-		Utils.log("first_name=" + firstName, this.getClass());
-		Utils.log("last_name=" + lastName, this.getClass());
-		Utils.log("change_to_first_name=" + changeToFirstName, this.getClass());
-		Utils.log("change_to_last_name=" + changeToLastName, this.getClass());
+		Utils.debug("Received /database/request POST request:", this.getClass());
+		Utils.debug("database_action=" + databaseAction, this.getClass());
+		Utils.debug("id=" + id, this.getClass());
+		Utils.debug("first_name=" + firstName, this.getClass());
+		Utils.debug("last_name=" + lastName, this.getClass());
+		Utils.debug("change_to_first_name=" + changeToFirstName, this.getClass());
+		Utils.debug("change_to_last_name=" + changeToLastName, this.getClass());
 		
 		ERRTYPE errorCode = ERRTYPE.NO_ERROR;
-		String message;
+		String message = "";
 		
-		// very ugly but it's late and I'm lazy
+		// looks better but should be in separate class probably?
 		switch (databaseAction) {
 			case "add": {
 				personRepository.save(new Person(firstName, lastName));
-				
-				message = "Create successful";
 			} break;
 			
 			case "remove": {
 				personRepository.deleteById(id);
-				
-				message = "Deletion successful";
 			} break;
 			
 			case "modify": {
-				Person person = personRepository.findById(id);
+				List<Person> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
 				
-				if (person == null) {
+				if (personList.size() > 1) {
+					errorCode = ERRTYPE.DATABASE_RESULT_SIZE_MORE_THAN_ONE;
+					break;
+				}
+				if (personList.size() == 0) {
 					errorCode = ERRTYPE.DATABASE_ID_NOT_FOUND;
-					message = "Entry ID not found";
+					break;
 				}
-				else {
-					person.setFirstName(changeToFirstName);
-					person.setLastName(changeToLastName);
-					
-					message = "Modification successful";
-				}
+				
+				Person person = personList.get(0);
+				person.setFirstName(changeToFirstName);
+				person.setLastName(changeToLastName);
 			} break;
 			
 			case "list": {
-				Utils.debug("'list' parameter detected", this.getClass());
+				List<Person> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
 				
-				List<Person> result = new ArrayList<Person>();
-				
-				if (!firstName.isEmpty()) {
-					personRepository.findByFirstName(firstName).forEach(person -> result.add(person));
-					
-					Utils.debug("first name not empty - showing list for '" + firstName + "'", this.getClass());
-					for (Person person : result) {
-						Utils.debug(person.toJSON(), this.getClass());
-					}
-				}
-				else {
-					if (!lastName.isEmpty()) {
-						personRepository.findByLastName(lastName).forEach(person -> result.add(person));
-						
-						Utils.debug("last name not empty - showing list for '" + firstName + "'", this.getClass());
-						for (Person person : result) {
-							Utils.debug(person.toJSON(), this.getClass());
-						}
-					}
-					else {
-						personRepository.findAll().forEach(person -> result.add(person));
-						Utils.debug("both names empty - showing list", this.getClass());
-						for (Person person : result) {
-							Utils.debug(person.toJSON(), this.getClass());
-						}
-					}
-				}
-				
-				message = "";
-				for (Person person : result) {
+				for (Person person : personList) {
 					message += person.toJSON() + ",";
 				}
 				message = "{" + message.substring(0, message.length() == 0 ? 0 : message.length()-1) + "}";
@@ -120,7 +90,6 @@ public class DatabaseController {
 			
 			default: {
 				errorCode = ERRTYPE.DATABASE_INCORRECT_DATABASE_ACTION;
-				message = "Incorrect databaseAction";
 			}
 		}
 		

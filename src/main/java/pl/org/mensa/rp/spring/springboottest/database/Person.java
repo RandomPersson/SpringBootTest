@@ -20,9 +20,14 @@ public class Person implements JSONable {
 	
 	protected Person() {}
 	
-	public Person(String first_name, String last_name) {
-		this.firstName = first_name;
-		this.lastName = last_name;
+	public Person(long id, String firstName, String lastName) {
+		this(firstName, lastName);
+		this.id = id;
+	}
+	
+	public Person(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	/////////////
