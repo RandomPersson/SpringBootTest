@@ -3,8 +3,6 @@ package pl.org.mensa.rp.spring.springboottest.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +18,6 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @Controller
 public class DatabaseController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(DatabaseController.class);
 	
 	@Autowired
 	private PersonRepository personRepository;
@@ -45,12 +41,12 @@ public class DatabaseController {
 		// here should be validation (security++) but i'm too lazy
 		
 		// TODO [DEBUG] remove later
-		Utils.log("database_action=" + databaseAction, logger);
-		Utils.log("id=" + id, logger);
-		Utils.log("first_name=" + firstName, logger);
-		Utils.log("last_name=" + lastName, logger);
-		Utils.log("change_to_first_name=" + changeToFirstName, logger);
-		Utils.log("change_to_last_name=" + changeToLastName, logger);
+		Utils.log("database_action=" + databaseAction, this.getClass());
+		Utils.log("id=" + id, this.getClass());
+		Utils.log("first_name=" + firstName, this.getClass());
+		Utils.log("last_name=" + lastName, this.getClass());
+		Utils.log("change_to_first_name=" + changeToFirstName, this.getClass());
+		Utils.log("change_to_last_name=" + changeToLastName, this.getClass());
 		
 		ERRTYPE errorCode = ERRTYPE.NO_ERROR;
 		String message;

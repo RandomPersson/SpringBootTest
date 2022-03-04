@@ -7,10 +7,15 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Utils {
+	public static boolean debug = true;
+	
 	private static final String color_prefix = "\u001B[",
 								color_suffix = "m";
+	
+	private static final HashMap<String, Logger> loggers = new HashMap<String, Logger>();
 	
 	private static final Map<String, String> color_map = new HashMap<String, String>();
 	static {
@@ -51,8 +56,29 @@ public class Utils {
 		return string_buffer.toString();
 	}
 	
-	public static void log(String message, Logger logger) {
+	public static void log(String message, Class<?> clazz) {
+		Logger logger = loggers.get(Utils.getClassPath(clazz));
+		
+		if (logger == null) {
+			logger = LoggerFactory.getLogger(clazz);
+			loggers.put(Utils.getClassPath(clazz), logger);
+		}
+		
 		logger.info(ANSIfyColors(message));
+	}
+	
+	public static void debug(String message, Class<?> clazz) {
+		if (debug) {
+			
+			Logger logger = loggers.get(Utils.getClassPath(clazz));
+			
+			if (logger == null) {
+				logger = LoggerFactory.getLogger(clazz);
+				loggers.put(Utils.getClassPath(clazz), logger);
+			}
+			
+			logger.info("[DEBUG] " + ANSIfyColors(message));
+		}
 	}
 	
 	// way faster than String.format, but doesn't look as convenient...
@@ -66,4 +92,9 @@ public class Utils {
 		
 		return string_builder.toString();
 	}
+	
+	public static String getClassPath(Class<?> clazz) {
+		return clazz.getPackageName() + "." + clazz.getName();
+	}
+	
 }

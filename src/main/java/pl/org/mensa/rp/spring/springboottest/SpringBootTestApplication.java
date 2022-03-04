@@ -1,7 +1,5 @@
 package pl.org.mensa.rp.spring.springboottest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,8 +11,6 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @SpringBootApplication
 public class SpringBootTestApplication extends SpringBootServletInitializer {
-	private static final Logger logger = LoggerFactory.getLogger(SpringBootTestApplication.class);
-	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootTestApplication.class, args);
 	}
@@ -23,7 +19,7 @@ public class SpringBootTestApplication extends SpringBootServletInitializer {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 			// init suff
-			Utils.log("&aApplication initialized, i think?&r", logger);
+			Utils.log("&aApplication initialized, i think?&r", this.getClass());
 		};
 	}
 	
