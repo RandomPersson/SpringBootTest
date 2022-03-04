@@ -81,17 +81,33 @@ public class DatabaseController {
 			} break;
 			
 			case "list": {
+				Utils.debug("'list' parameter detected", this.getClass());
+				
 				List<Person> result = new ArrayList<Person>();
 				
-				if (firstName != "") {
+				if (!firstName.isEmpty()) {
 					personRepository.findByFirstName(firstName).forEach(person -> result.add(person));
+					
+					Utils.debug("first name not empty - showing list for '" + firstName + "'", this.getClass());
+					for (Person person : result) {
+						Utils.debug(person.toJSON(), this.getClass());
+					}
 				}
 				else {
-					if (lastName != "") {
+					if (!lastName.isEmpty()) {
 						personRepository.findByLastName(lastName).forEach(person -> result.add(person));
+						
+						Utils.debug("last name not empty - showing list for '" + firstName + "'", this.getClass());
+						for (Person person : result) {
+							Utils.debug(person.toJSON(), this.getClass());
+						}
 					}
 					else {
 						personRepository.findAll().forEach(person -> result.add(person));
+						Utils.debug("both names empty - showing list", this.getClass());
+						for (Person person : result) {
+							Utils.debug(person.toJSON(), this.getClass());
+						}
 					}
 				}
 				
