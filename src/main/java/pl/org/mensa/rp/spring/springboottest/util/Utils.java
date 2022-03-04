@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 public class Utils {
 	public static boolean debug = true;
+	public static String debugPrefix = "[DEBUG] ";
 	
 	private static final String color_prefix = "\u001B[",
 								color_suffix = "m";
@@ -77,7 +78,7 @@ public class Utils {
 				loggers.put(Utils.getClassPath(clazz), logger);
 			}
 			
-			logger.info("[DEBUG] " + ANSIfyColors(message));
+			logger.info(ANSIfyColors(debugPrefix + message));
 		}
 	}
 	

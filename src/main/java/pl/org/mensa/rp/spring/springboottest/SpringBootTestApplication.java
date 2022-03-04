@@ -13,8 +13,10 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 @SpringBootApplication
 public class SpringBootTestApplication extends SpringBootServletInitializer {
 	
-	@Value("${debug}")
+	@Value("${code_debug:false}")
 	private boolean debug;
+	@Value("${color_debug:false}")
+	private boolean color_debug;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootTestApplication.class, args);
@@ -25,8 +27,9 @@ public class SpringBootTestApplication extends SpringBootServletInitializer {
 		return args -> {
 			// should run this earlier but too lazy to research how
 			Utils.debug = debug;
+			if (color_debug) Utils.debugPrefix = "&8[&bDEBUG&8] &r";
 			
-			Utils.debug("Debug enabled!", this.getClass());
+			Utils.debug("&aDebug enabled!&r", this.getClass());
 			Utils.debug("&aApplication initialized, i think?&r", this.getClass());
 		};
 	}
