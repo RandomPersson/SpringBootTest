@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @Controller
-public class ColortestController {
+public class ColortestHTMLController {
 	
 	@GetMapping("/debug/colortest")
 	@ResponseBody

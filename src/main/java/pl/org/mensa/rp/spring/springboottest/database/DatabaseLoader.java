@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import pl.org.mensa.rp.spring.springboottest.database.person.PersonEntity;
+import pl.org.mensa.rp.spring.springboottest.database.person.PersonRepository;
+
 @Component
 public class DatabaseLoader implements CommandLineRunner {
 	@SuppressWarnings("unused")
@@ -20,11 +23,11 @@ public class DatabaseLoader implements CommandLineRunner {
 	
 	@Override
 	public void run(String... strings) throws Exception {
-		personRepository.save(new Person("Human", "Persson"));
-		personRepository.save(new Person("Random", "Persson"));
-		personRepository.save(new Person("Human", "Being"));
-		personRepository.save(new Person("Random", "Dude"));
-		personRepository.save(new Person("Random", "Being"));
+		personRepository.save(new PersonEntity("Human", "Persson"));
+		personRepository.save(new PersonEntity("Random", "Persson"));
+		personRepository.save(new PersonEntity("Human", "Being"));
+		personRepository.save(new PersonEntity("Random", "Dude"));
+		personRepository.save(new PersonEntity("Random", "Being"));
 		
 //		// fetch all customers
 //		logger.info("Customers found with findAll():");

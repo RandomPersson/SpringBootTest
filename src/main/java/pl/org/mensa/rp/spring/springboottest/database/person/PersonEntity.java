@@ -1,4 +1,4 @@
-package pl.org.mensa.rp.spring.springboottest.database;
+package pl.org.mensa.rp.spring.springboottest.database.person;
 
 import java.util.Objects;
 
@@ -8,24 +8,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import pl.org.mensa.rp.spring.springboottest.util.JSONable;
-import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @Entity
-public class Person implements JSONable {
+public class PersonEntity implements JSONable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private long id;
 	private String firstName;
 	private String lastName;
 	
-	protected Person() {}
+	protected PersonEntity() {}
 	
-	public Person(long id, String firstName, String lastName) {
+	public PersonEntity(long id, String firstName, String lastName) {
 		this(firstName, lastName);
 		this.id = id;
 	}
 	
-	public Person(String firstName, String lastName) {
+	public PersonEntity(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
@@ -73,7 +72,7 @@ public class Person implements JSONable {
 	
 	@Override
 	public String toString() {
-		return Utils.buildString("Person[id=", id, ", first_name='", firstName, "', last_name='", lastName, "']");
+		return String.format("Person[id=%s,firstName=%s,lastName=%s]", id, firstName, lastName);
 	}
 	
 	@Override
@@ -81,7 +80,7 @@ public class Person implements JSONable {
 		if (this == obj) return true;
 		if (obj == null || getClass() != obj.getClass()) return false;
 		
-		Person employee = (Person) obj;
+		PersonEntity employee = (PersonEntity) obj;
 		
 		return
 			Objects.equals(id, employee.id) &&

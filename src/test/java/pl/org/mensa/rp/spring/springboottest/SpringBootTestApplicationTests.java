@@ -1,14 +1,14 @@
 package pl.org.mensa.rp.spring.springboottest;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
+//import org.junit.jupiter.api.Test;
+//import org.springframework.boot.test.context.SpringBootTest;
+//
+//@SpringBootTest
 class SpringBootTestApplicationTests {
-
-	@Test
-	void contextLoads() {
-		
-	}
+//
+//	@Test
+//	void contextLoads() {
+//		
+//	}
 
 }

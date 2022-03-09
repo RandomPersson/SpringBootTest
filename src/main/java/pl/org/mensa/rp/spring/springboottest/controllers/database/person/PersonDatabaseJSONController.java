@@ -1,36 +1,28 @@
-package pl.org.mensa.rp.spring.springboottest.controllers;
+package pl.org.mensa.rp.spring.springboottest.controllers.database.person;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import pl.org.mensa.rp.spring.springboottest.database.Person;
-import pl.org.mensa.rp.spring.springboottest.database.PersonRepository;
+import pl.org.mensa.rp.spring.springboottest.database.person.PersonEntity;
+import pl.org.mensa.rp.spring.springboottest.database.person.PersonRepository;
 import pl.org.mensa.rp.spring.springboottest.json.DatabaseActionJSON;
 import pl.org.mensa.rp.spring.springboottest.util.ERRTYPE;
 import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
 @Controller
-public class DatabaseController {
+public class PersonDatabaseJSONController {
 	
 	@Autowired
 	private PersonRepository personRepository;
 	
-	@GetMapping("/database")
-	public String getDatabase() {
-		Utils.debug("Received /database GET request:", this.getClass());
-		
-		return "database";
-	}
-	
 	@PostMapping("/database/request")
 	@ResponseBody
-	public DatabaseActionJSON postDatabase(
+	public DatabaseActionJSON postPersonDatabase(
 			@RequestParam(value = "database_action", required = true) String databaseAction,
 			@RequestParam(value = "id", required = false, defaultValue = "0") long id,
 			@RequestParam(value = "first_name", required = false, defaultValue = "") String firstName,
@@ -55,7 +47,7 @@ public class DatabaseController {
 		// looks better but should be in separate class probably?
 		switch (databaseAction) {
 			case "add": {
-				personRepository.save(new Person(firstName, lastName));
+				personRepository.save(new PersonEntity(firstName, lastName));
 			} break;
 			
 			case "remove": {
@@ -63,7 +55,7 @@ public class DatabaseController {
 			} break;
 			
 			case "modify": {
-				List<Person> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
 				
 				if (personList.size() > 1) {
 					errorCode = ERRTYPE.DATABASE_RESULT_SIZE_MORE_THAN_ONE;
@@ -74,15 +66,15 @@ public class DatabaseController {
 					break;
 				}
 				
-				Person person = personList.get(0);
+				PersonEntity person = personList.get(0);
 				person.setFirstName(changeToFirstName);
 				person.setLastName(changeToLastName);
 			} break;
 			
 			case "list": {
-				List<Person> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
 				
-				for (Person person : personList) {
+				for (PersonEntity person : personList) {
 					message += person.toJSON() + ",";
 				}
 				message = "{" + message.substring(0, message.length() == 0 ? 0 : message.length()-1) + "}";
