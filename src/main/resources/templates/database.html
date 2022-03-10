@@ -8,8 +8,8 @@
 			function fitSizeToContent(obj) {
 				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 			}
-			function onSubmitForm(database_action) {
-				document.database_CRUD_form.database_action.value = database_action;
+			function onSubmitForm(databaseAction) {
+				document.databaseCRUDForm.databaseAction.value = databaseAction;
 			}
 		</script>
 		
@@ -22,8 +22,8 @@
 		</a>
 		<br>
 		
-		<form name="database_CRUD_form" action="/database/request" target="form_result_frame" method="post">
-			<input type="hidden" name="database_action" value="invalid" />
+		<form name="databaseCRUDForm" action="/database/request" target="formResultFrame" method="post">
+			<input type="hidden" name="databaseAction" value="invalid" />
 			
 			<table style="margin-left: auto; margin-right: auto;">
 				<tr>
