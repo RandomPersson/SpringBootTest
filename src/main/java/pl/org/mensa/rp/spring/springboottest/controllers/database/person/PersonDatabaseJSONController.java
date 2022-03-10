@@ -24,11 +24,11 @@ public class PersonDatabaseJSONController {
 	@ResponseBody
 	public DatabaseActionJSON postPersonDatabase(
 			@RequestParam(value = "database_action", required = true) String databaseAction,
-			@RequestParam(value = "id", required = false, defaultValue = "0") long id,
-			@RequestParam(value = "first_name", required = false, defaultValue = "") String firstName,
-			@RequestParam(value = "last_name", required = false, defaultValue = "") String lastName,
-			@RequestParam(value = "change_to_first_name", required = false, defaultValue = "") String changeToFirstName,
-			@RequestParam(value = "change_to_last_name", required = false, defaultValue = "") String changeToLastName
+			@RequestParam(value = "id", required = false) Long id,
+			@RequestParam(value = "first_name", required = false) String firstName,
+			@RequestParam(value = "last_name", required = false) String lastName,
+			@RequestParam(value = "change_to_first_name", required = false) String changeToFirstName,
+			@RequestParam(value = "change_to_last_name", required = false) String changeToLastName
 		) {
 		
 		// here should be validation (security++) but i'm too lazy
@@ -55,7 +55,7 @@ public class PersonDatabaseJSONController {
 			} break;
 			
 			case "modify": {
-				List<PersonEntity> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(id, firstName, lastName);
 				
 				if (personList.size() > 1) {
 					errorCode = ERRTYPE.DATABASE_RESULT_SIZE_MORE_THAN_ONE;
@@ -72,7 +72,7 @@ public class PersonDatabaseJSONController {
 			} break;
 			
 			case "list": {
-				List<PersonEntity> personList = personRepository.findByEverythingNullable(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(id, firstName, lastName);
 				
 				for (PersonEntity person : personList) {
 					message += person.toJSON() + ",";
