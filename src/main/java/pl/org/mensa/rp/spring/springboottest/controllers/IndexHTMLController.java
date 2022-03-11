@@ -9,7 +9,7 @@ import pl.org.mensa.rp.spring.springboottest.util.Utils;
 public class IndexHTMLController {
 	
 	@GetMapping("/")
-	public String requestIndex() {
+	public String handleGetIndex() {
 		Utils.debug("Received /index/ GET request", this.getClass());
 		
 		return "index";

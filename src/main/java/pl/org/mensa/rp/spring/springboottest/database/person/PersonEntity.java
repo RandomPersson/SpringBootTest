@@ -20,14 +20,17 @@ public class PersonEntity implements JSONable {
 	protected PersonEntity() {}
 	
 	public PersonEntity(long id, String firstName, String lastName) {
-		this(firstName, lastName);
 		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 	
 	public PersonEntity(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+	
+	
 	
 	/////////////
 	// GETTERS //
@@ -45,6 +48,8 @@ public class PersonEntity implements JSONable {
 		return lastName;
 	}
 	
+	
+	
 	/////////////
 	// SETTERS //
 	/////////////
@@ -61,11 +66,13 @@ public class PersonEntity implements JSONable {
 		this.lastName = lastName;
 	}
 	
+	
+	
 	///////////////
 	// OVERRIDES //
 	///////////////
 	
-	@Override
+	@Deprecated
 	public String toJSON() {
 		return String.format("{id:%d,first_name:%s,last_name:%s}", id, firstName, lastName);
 	}

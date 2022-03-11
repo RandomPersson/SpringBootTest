@@ -4,13 +4,50 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>Spring Boot E2E CRUD test</title>
 		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+		</script>
+		
 		<script>
 			function fitSizeToContent(obj) {
 				obj.style.height = obj.contentWindow.document.documentElement.scrollHeight + 'px';
 			}
-			function onSubmitForm(databaseAction) {
-				document.databaseCRUDForm.databaseAction.value = databaseAction;
+			
+			function setFormDatabaseAction(form, databaseAction) {
+				form.databaseAction.value = databaseAction;
 			}
+		</script>
+
+		<script>
+			function sendFormJSONRequestAndViewResultInTarget(databaseAction, formId, commonValueName) {
+				
+				var form = document.getElementById(formId);
+				setFormDatabaseAction(form, databaseAction);
+				
+				var JSONcontent = {};
+				var JSONpacket = {};
+				
+				for (let element of form.getElementsByTagName("input")) {
+					if (element.name == commonValueName) {
+						JSONcontent[element.id] = element.value;
+					}
+				}
+				
+				JSONpacket["id"] = 0;
+				JSONpacket["errorCode"] = 0;
+				JSONpacket["content"] = JSONcontent;
+				
+				$.ajax({
+					url: form.getAttribute('action'),
+					type: form.getAttribute('method'),
+					data: JSON.stringify(JSONpacket),
+					dataType: "json",
+					contentType: "application/json; charset=utf-8",
+					success: function(data) {
+						document.getElementById(form.getAttribute('target')).value = JSON.stringify(data);
+					}
+				});
+			
+			};
 		</script>
 		
 	</head>
@@ -22,39 +59,44 @@
 		</a>
 		<br>
 		
-		<form name="databaseCRUDForm" action="/database/request" target="formResultFrame" method="post">
-			<input type="hidden" name="databaseAction" value="invalid" />
+		<form id="databaseCRUDForm" action="/database/request" method="post" target="formResultFrame">
+			<input type="hidden" name="databaseCRUDFormValue" id="databaseAction" value="invalid" />
 			
 			<table style="margin-left: auto; margin-right: auto;">
 				<tr>
-					<th>ID</th>
+					<th><span id="ajaxtest">ID</span></th>
 					<th>First name</th>
 					<th>Last name</th>
 				</tr>
 				<tr>
-					<td><input type="text" id="id" name="id" /></td>
-					<td><input type="text" id="firstName" name="firstName" /></td>
-					<td><input type="text" id="lastName" name="lastName" /></td>
+					<td><input type="text" name="databaseCRUDFormValue" id="id" /></td>
+					<td><input type="text" name="databaseCRUDFormValue" id="firstName" /></td>
+					<td><input type="text" name="databaseCRUDFormValue" id="lastName" /></td>
 					
-					<td><input type="submit" value="Add entry" onclick="onSubmitForm('add')" style="width: 100%" /></td>
-					<td><input type="submit" value="Remove entry" onclick="onSubmitForm('remove')" /></td>
+					<td><input type="submit" value="Add entry" onclick=
+							"sendFormJSONRequestAndViewResultInTarget('add', 'databaseCRUDForm', 'databaseCRUDFormValue');" style="width: 100%" /></td>
+					<td><input type="submit" value="Remove entry" onclick=
+							"sendFormJSONRequestAndViewResultInTarget('remove', 'databaseCRUDForm', 'databaseCRUDFormValue');" /></td>
 				</tr>
 				<tr>
 					<td></td>
-					<td><input type="text" id="changeToFirstName" name="changeToFirstName" /></td>
-					<td><input type="text" id="changeToLastName" name="changeToLastName" /></td>
+					<td><input type="text" name="databaseCRUDFormValue" id="changeToFirstName" /></td>
+					<td><input type="text" name="databaseCRUDFormValue" id="changeToLastName" /></td>
 					
-					<td><input type="submit" value="Modify entry" onclick="onSubmitForm('modify')" /></td>
+					<td><input type="submit" value="Modify entry" onclick=
+							"sendFormJSONRequestAndViewResultInTarget('modify', 'databaseCRUDForm', 'databaseCRUDFormValue');" /></td>
 				</tr>
 				<tr>
-					<td colspan=3><input type="submit" value="Show matching entries" onclick="onSubmitForm('list')" /></td>
+					<td colspan=3><input type="button" value="Show matching entries" onclick=
+							"sendFormJSONRequestAndViewResultInTarget('list', 'databaseCRUDForm', 'databaseCRUDFormValue');" />
+					</td>
 				</tr>
 			</table>
 			
 		</form>
 		<br>
 		
-		<iframe name="formResultFrame" style="width: 80%; height: 500px" />
+		<textarea readonly id="formResultFrame" style="width: 80%; height: 500px"></textarea>
 		
 	</body>
 </html>

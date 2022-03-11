@@ -3,59 +3,60 @@ package pl.org.mensa.rp.spring.springboottest.controllers.database.person;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import pl.org.mensa.rp.spring.springboottest.database.person.PersonEntity;
 import pl.org.mensa.rp.spring.springboottest.database.person.PersonRepository;
-import pl.org.mensa.rp.spring.springboottest.json.DatabaseActionJSON;
+import pl.org.mensa.rp.spring.springboottest.json.PacketJSON;
+import pl.org.mensa.rp.spring.springboottest.json.PersonDatabaseActionContentJSON;
+import pl.org.mensa.rp.spring.springboottest.json.PersonDatabaseActionContentResponseJSON;
 import pl.org.mensa.rp.spring.springboottest.util.ERRTYPE;
+import pl.org.mensa.rp.spring.springboottest.util.PACKETID;
 import pl.org.mensa.rp.spring.springboottest.util.Utils;
 
-@Controller
+@RestController
 public class PersonDatabaseJSONController {
 	
 	@Autowired
 	private PersonRepository personRepository;
 	
-	@PostMapping("/database/request")
-	@ResponseBody
-	public DatabaseActionJSON postPersonDatabase(
-			@RequestParam(value = "database_action", required = true) String databaseAction,
-			@RequestParam(value = "id", required = false) Long id,
-			@RequestParam(value = "first_name", required = false) String firstName,
-			@RequestParam(value = "last_name", required = false) String lastName,
-			@RequestParam(value = "change_to_first_name", required = false) String changeToFirstName,
-			@RequestParam(value = "change_to_last_name", required = false) String changeToLastName
-		) {
+	@PostMapping(value = "/database/request"/*, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE*/)
+	public PacketJSON<PersonDatabaseActionContentResponseJSON> handlePostDatabaseRequest(@RequestBody PacketJSON<PersonDatabaseActionContentJSON> packet) {
+		
+		PersonDatabaseActionContentJSON content = packet.getContent();
+		PersonDatabaseActionContentResponseJSON responseContent = null;
 		
 		// here should be validation (security++) but i'm too lazy
 		
 		Utils.debug("Received /database/request POST request:", this.getClass());
-		Utils.debug("database_action=" + databaseAction, this.getClass());
-		Utils.debug("id=" + id, this.getClass());
-		Utils.debug("first_name=" + firstName, this.getClass());
-		Utils.debug("last_name=" + lastName, this.getClass());
-		Utils.debug("change_to_first_name=" + changeToFirstName, this.getClass());
-		Utils.debug("change_to_last_name=" + changeToLastName, this.getClass());
+		Utils.debug("database_action=" + content.getDatabaseAction(), this.getClass());
+		Utils.debug("id=" + content.getId(), this.getClass());
+		Utils.debug("first_name=" + content.getFirstName(), this.getClass());
+		Utils.debug("last_name=" + content.getLastName(), this.getClass());
+		Utils.debug("change_to_first_name=" + content.getChangeToFirstName(), this.getClass());
+		Utils.debug("change_to_last_name=" + content.getChangeToLastName(), this.getClass());
 		
 		ERRTYPE errorCode = ERRTYPE.NO_ERROR;
-		String message = "";
 		
-		// looks better but should be in separate class probably?
-		switch (databaseAction) {
+		// TODO split into more methods; god this is ugly
+		switch (content.getDatabaseAction()) {
 			case "add": {
-				personRepository.save(new PersonEntity(firstName, lastName));
+				personRepository.save(new PersonEntity(content.getFirstName(), content.getLastName()));
+				
+				responseContent = null;
 			} break;
 			
 			case "remove": {
-				personRepository.deleteById(id);
+				personRepository.deleteById(content.getId());
+				
+				responseContent = null;
 			} break;
 			
 			case "modify": {
-				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(
+						content.getId(), content.getFirstName(), content.getLastName());
 				
 				if (personList.size() > 1) {
 					errorCode = ERRTYPE.DATABASE_RESULT_SIZE_MORE_THAN_ONE;
@@ -67,25 +68,30 @@ public class PersonDatabaseJSONController {
 				}
 				
 				PersonEntity person = personList.get(0);
-				person.setFirstName(changeToFirstName);
-				person.setLastName(changeToLastName);
+				person.setFirstName(content.getChangeToFirstName());
+				person.setLastName(content.getChangeToLastName());
+				
+				responseContent = null;
 			} break;
 			
 			case "list": {
-				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(id, firstName, lastName);
+				List<PersonEntity> personList = personRepository.findByIdEqualsAndFirstNameEqualsAndLastNameEquals(
+						content.getId(), content.getFirstName(), content.getLastName());
 				
+				responseContent = null;
 				for (PersonEntity person : personList) {
-					message += person.toJSON() + ",";
+					//TODO LOL, make a lost or something
+					responseContent = new PersonDatabaseActionContentResponseJSON(0L, person.getFirstName(), person.getLastName());
 				}
-				message = "{" + message.substring(0, message.length() == 0 ? 0 : message.length()-1) + "}";
 			} break;
 			
 			default: {
 				errorCode = ERRTYPE.DATABASE_INCORRECT_DATABASE_ACTION;
+				responseContent = null;
 			}
 		}
 		
-		return new DatabaseActionJSON(errorCode, message);
-		
+		//TODO "content":null = bad, "content"={} good (maybe Jackson will help parse JSONable?)
+		return new PacketJSON<PersonDatabaseActionContentResponseJSON>(PACKETID.BASIC_RESPONSE, errorCode, responseContent);
 	}
 }
